@@ -1,2 +1,6 @@
 /db.sqlite3
 /venv
+toystore/local_settings.py
+toystore/__pycache__
+blog/__pycache__
+blog/migrations/__pycache__
