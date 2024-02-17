@@ -45,7 +45,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ('id', 'post', 'text', 'author', 'publish_date')
+    list_display = ('id', 'post', 'text', 'author',
+                    'publish_date', 'is_active')
+    list_editable = ('is_active',)
     list_filter = ('post', 'author')
     search_fields = ('text',)
 

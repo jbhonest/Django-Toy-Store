@@ -1,7 +1,7 @@
 from rest_framework import viewsets, filters, permissions
 from django_filters.rest_framework import DjangoFilterBackend
-from .models import Category, Post
-from .serializers import CategorySerializer, PostSerializer
+from .models import Category, Post, Comment
+from .serializers import CategorySerializer, PostSerializer, CommentSerializer
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -21,3 +21,13 @@ class PostViewSet(viewsets.ModelViewSet):
                        filters.OrderingFilter, filters.SearchFilter,)
     filterset_fields = ('category',)
     search_fields = ('title', 'content')
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    queryset = Comment.objects.filter(is_active=True).order_by('-pk')
+    filter_backends = (DjangoFilterBackend,
+                       filters.OrderingFilter, filters.SearchFilter,)
+    filterset_fields = ('post', 'author')
+    search_fields = ('text',)
