@@ -23,6 +23,14 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     publish_date = models.DateTimeField(auto_now_add=True)
 
+    def delete(self):
+        # Delete associated Image objects and their image files
+        for image in self.images.all():
+            image.delete()
+
+        # Call the superclass's delete method
+        super().delete()
+
     def __str__(self):
         return self.title
 
@@ -42,7 +50,7 @@ class Comment(models.Model):
 
 class Image(models.Model):
     post = models.ForeignKey(
-        Post, on_delete=models.PROTECT, related_name='images')
+        Post, on_delete=models.CASCADE, related_name='images')
     caption = models.CharField(max_length=255)
     image = models.ImageField(upload_to='blog_images/')
 
