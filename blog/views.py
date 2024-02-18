@@ -19,8 +19,11 @@ class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.order_by('-pk')
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter,)
-    filterset_fields = ('category',)
+    filterset_fields = ('category', 'author')
     search_fields = ('title', 'content')
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -31,6 +34,9 @@ class CommentViewSet(viewsets.ModelViewSet):
                        filters.OrderingFilter, filters.SearchFilter,)
     filterset_fields = ('post', 'author')
     search_fields = ('text',)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class ImageViewSet(viewsets.ModelViewSet):
