@@ -4,5 +4,5 @@ toystore/local_settings.py
 toystore/__pycache__
 blog/__pycache__
 blog/migrations/__pycache__
-/media/blog_images/*
+/media/blog_images/
 

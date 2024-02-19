@@ -15,13 +15,12 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 
-class Post(models.Model):
-    title = models.CharField(max_length=255)
-    content = models.TextField()
+class Product(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField()
+    price = models.PositiveIntegerField()
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name='posts')
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
-    publish_date = models.DateTimeField(auto_now_add=True)
+        Category, on_delete=models.PROTECT, related_name='products')
 
     def delete(self):
         # Delete associated Image objects and their image files
@@ -32,15 +31,15 @@ class Post(models.Model):
         super().delete()
 
     def __str__(self):
-        return self.title
+        return self.name
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='comments')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name='blog_comments')
+        User, on_delete=models.CASCADE, related_name='product_comments')
 
     is_active = models.BooleanField(default=False)
     publish_date = models.DateTimeField(auto_now_add=True)
@@ -50,10 +49,10 @@ class Comment(models.Model):
 
 
 class Image(models.Model):
-    post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name='images')
+    product = models.ForeignKey(
+        Product, on_delete=models.CASCADE, related_name='images')
     caption = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='blog_images/')
+    image = models.ImageField(upload_to='store_images/')
 
     def delete(self):
         # Delete the image file from the storage
