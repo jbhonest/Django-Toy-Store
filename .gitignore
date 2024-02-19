@@ -2,7 +2,9 @@
 /venv
 toystore/local_settings.py
 toystore/__pycache__
+store/__pycache__
+store/migrations/__pycache__
 blog/__pycache__
 blog/migrations/__pycache__
-/media/blog_images/
+/media
 
