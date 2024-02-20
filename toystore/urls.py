@@ -24,6 +24,7 @@ urlpatterns = [
     path(getattr(settings, 'ADMIN_URL'), admin.site.urls),
     path('api/blog/', include('blog.urls')),
     path('api/store/', include('store.urls')),
+    path('api/cart/', include('cart.urls')),
 
     # SimpleJWT URLs
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),

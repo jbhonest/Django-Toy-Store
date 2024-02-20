@@ -10,7 +10,8 @@ class CartItemInline(admin.TabularInline):
 
 @admin.register(CartItem)
 class CartItemAdmin(admin.ModelAdmin):
-    list_display = ('id', 'product',  'quantity')
+    list_display = ('id', 'product', 'quantity', 'cart')
+    list_filter = ('product', 'cart')
 
 
 @admin.register(Cart)
