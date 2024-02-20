@@ -21,8 +21,8 @@ class CartAdmin(admin.ModelAdmin):
     inlines = (CartItemInline,)
 
     def get_queryset(self, request):
-        return super().get_queryset(request).annotate(item_row=Count('cartitems'))
+        return super().get_queryset(request).annotate(item_row=Count('cart_items'))
 
     @admin.display(ordering='item_row')
     def item_row(self, cart):
-        return cart.cartitems.count()
+        return cart.cart_items.count()
