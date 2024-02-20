@@ -6,5 +6,7 @@ store/__pycache__
 store/migrations/__pycache__
 blog/__pycache__
 blog/migrations/__pycache__
+cart/__pycache__
+cart/migrations/__pycache__
 /media
 
