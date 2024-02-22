@@ -16,13 +16,12 @@ class CartItemAdmin(admin.ModelAdmin):
 
 @admin.register(Cart)
 class CartAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user', 'item_row', 'created_at')
-    list_filter = ('user', )
+    list_display = ('id', 'item_row', 'created_at')
     inlines = (CartItemInline,)
 
     def get_queryset(self, request):
-        return super().get_queryset(request).annotate(item_row=Count('cart_items'))
+        return super().get_queryset(request).annotate(item_row=Count('items'))
 
     @admin.display(ordering='item_row')
     def item_row(self, cart):
-        return cart.cart_items.count()
+        return cart.items.count()
