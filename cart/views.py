@@ -1,14 +1,14 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework import viewsets
 from .models import Cart, CartItem
 from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 
 
-class CartViewSet(ModelViewSet):
+class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.order_by('-pk')
     serializer_class = CartSerializer
 
 
-class CartItemViewSet(ModelViewSet):
+class CartItemViewSet(viewsets.ModelViewSet):
     http_method_names = ['get', 'post', 'patch', 'delete']
 
     def get_serializer_class(self):
