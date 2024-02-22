@@ -1,12 +1,12 @@
-from django.urls import path, include
-from rest_framework import routers
-from .views import CartViewSet
+from rest_framework_nested import routers
+from .views import CartViewSet, CartItemViewSet
 
-cart_router = routers.DefaultRouter()
-cart_router.register('', CartViewSet)
+router = routers.DefaultRouter()
+router.register('carts', CartViewSet)
+
+carts_router = routers.NestedDefaultRouter(router, 'carts', lookup='cart')
+carts_router.register('items', CartItemViewSet, basename='cart-items')
 
 
-urlpatterns = [
-    path('carts/', include(cart_router.urls)),
-
-]
+# URLConf
+urlpatterns = router.urls + carts_router.urls
