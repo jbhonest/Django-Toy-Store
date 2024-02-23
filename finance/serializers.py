@@ -6,7 +6,7 @@ from .models import Order, OrderItem
 class SimpleProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
-        fields = ['id', 'name', 'price']
+        fields = ['id', 'name']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -14,11 +14,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, order_item: OrderItem):
-        return order_item.quantity * order_item.product.price
+        return order_item.quantity * order_item.price
 
     class Meta:
         model = OrderItem
-        fields = ['id', 'product', 'quantity', 'total_price']
+        fields = ['id', 'product', 'price', 'quantity', 'total_price']
 
 
 class OrderSerializer(serializers.ModelSerializer):
@@ -26,7 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
     total_price = serializers.SerializerMethodField()
 
     def get_total_price(self, order):
-        return sum([item.quantity * item.product.price for item in order.items.all()])
+        return sum([item.quantity * item.price for item in order.items.all()])
 
     class Meta:
         model = Order

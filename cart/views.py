@@ -1,3 +1,4 @@
+from django.db import transaction
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -18,21 +19,23 @@ class CartViewSet(viewsets.ModelViewSet):
         if cart.items.count() == 0:
             return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
 
-        order = Order.objects.create(user=self.request.user)
-        order_items = [
-            OrderItem(
-                order=order,
-                product=item.product,
-                price=item.product.price,
-                quantity=item.quantity
-            ) for item in cart.items.all()
-        ]
-        OrderItem.objects.bulk_create(order_items)
+        with transaction.atomic():
+            # Create a new order based on current cart
+            order = Order.objects.create(user=self.request.user)
+            order_items = [
+                OrderItem(
+                    order=order,
+                    product=item.product,
+                    price=item.product.price,
+                    quantity=item.quantity
+                ) for item in cart.items.all()
+            ]
+            OrderItem.objects.bulk_create(order_items)
 
-        # Delete current cart
-        Cart.objects.filter(pk=cart.id).delete()
+            # Delete current cart
+            Cart.objects.filter(pk=cart.id).delete()
 
-        return Response('Order Created')
+            return Response('Order Created')
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
