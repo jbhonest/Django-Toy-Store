@@ -1,11 +1,38 @@
+from rest_framework.decorators import action
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework import viewsets
 from .models import Cart, CartItem
+from finance.models import Order, OrderItem
 from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 
 
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.order_by('-pk')
     serializer_class = CartSerializer
+
+    @action(detail=True, methods=['post', 'get'])
+    def checkout(self, request, pk=None):
+        cart = self.get_object()
+
+        if cart.items.count() == 0:
+            return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
+
+        order = Order.objects.create(user=self.request.user)
+        order_items = [
+            OrderItem(
+                order=order,
+                product=item.product,
+                price=item.product.price,
+                quantity=item.quantity
+            ) for item in cart.items.all()
+        ]
+        OrderItem.objects.bulk_create(order_items)
+
+        # Delete current cart
+        Cart.objects.filter(pk=cart.id).delete()
+
+        return Response('Order Created')
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
