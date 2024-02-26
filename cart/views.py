@@ -13,31 +13,34 @@ class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.order_by('-pk')
     serializer_class = CartSerializer
 
-    @action(detail=True, methods=['post', 'get'])
+    @action(detail=True, methods=['get', 'post'])
     def checkout(self, request, pk=None):
         cart = self.get_object()
 
         if cart.items.count() == 0:
             return Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
 
-        with transaction.atomic():
-            # Create a new order based on current cart
-            order = Order.objects.create(user=self.request.user)
-            order_items = [
-                OrderItem(
-                    order=order,
-                    product=item.product,
-                    price=item.product.price,
-                    quantity=item.quantity
-                ) for item in cart.items.all()
-            ]
-            OrderItem.objects.bulk_create(order_items)
+        try:
+            with transaction.atomic():
+                # Create a new order based on current cart
+                order = Order.objects.create(user=self.request.user)
+                order_items = [
+                    OrderItem(
+                        order=order,
+                        product=item.product,
+                        price=item.product.price,
+                        quantity=item.quantity
+                    ) for item in cart.items.all()
+                ]
+                OrderItem.objects.bulk_create(order_items)
 
-            # Delete current cart
-            Cart.objects.filter(pk=cart.id).delete()
+                # Delete current cart
+                Cart.objects.filter(pk=cart.id).delete()
 
-            order_serializer = OrderSerializer(order)
-            return Response(order_serializer.data)
+                order_serializer = OrderSerializer(order)
+                return Response(order_serializer.data)
+        except ValueError:
+            return Response({"error": "You must login to checkout"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CartItemViewSet(viewsets.ModelViewSet):
