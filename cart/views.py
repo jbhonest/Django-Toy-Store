@@ -5,6 +5,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from .models import Cart, CartItem
 from finance.models import Order, OrderItem
+from finance.serializers import OrderSerializer
 from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
 
 
@@ -35,7 +36,8 @@ class CartViewSet(viewsets.ModelViewSet):
             # Delete current cart
             Cart.objects.filter(pk=cart.id).delete()
 
-            return Response('Order Created')
+            order_serializer = OrderSerializer(order)
+            return Response(order_serializer.data)
 
 
 class CartItemViewSet(viewsets.ModelViewSet):

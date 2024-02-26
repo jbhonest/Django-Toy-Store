@@ -9,6 +9,9 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
@@ -17,3 +20,6 @@ class OrderItem(models.Model):
         Product, on_delete=models.PROTECT, related_name='orderitems')
     quantity = models.PositiveSmallIntegerField()
     price = models.PositiveIntegerField()
+
+    def __str__(self):
+        return str(self.id)

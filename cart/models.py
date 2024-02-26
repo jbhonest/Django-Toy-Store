@@ -5,6 +5,9 @@ from store.models import Product
 class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class CartItem(models.Model):
     cart = models.ForeignKey(
@@ -14,3 +17,6 @@ class CartItem(models.Model):
 
     class Meta:
         unique_together = [['cart', 'product']]
+
+    def __str__(self):
+        return str(self.id)
