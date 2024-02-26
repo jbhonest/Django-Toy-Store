@@ -48,7 +48,7 @@ python manage.py runserver
   * To create a cart, send a post request to: http://127.0.0.1:8000/api/cart/carts
   * To add an item to a cart, send a post request to: http://127.0.0.1:8000/api/cart/carts/{cart_id}/items
   * To view items of a cart, send a get request to: http://127.0.0.1:8000/api/cart/carts/{cart_id}/items
-  * To Checkout a cart, send a post request to: http://127.0.0.1:8000/api/cart/carts/{cart_id}/checkout
+  * To checkout a cart, send a post request to: http://127.0.0.1:8000/api/cart/carts/{cart_id}/checkout
 * Finance API root: http://127.0.0.1:8000/api/finance/
 
 
