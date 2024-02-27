@@ -13,7 +13,7 @@ class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.order_by('-pk')
     serializer_class = CartSerializer
 
-    @action(detail=True, methods=['get', 'post'])
+    @action(detail=True, methods=['post'])
     def checkout(self, request, pk=None):
         cart = self.get_object()
 
