@@ -15,14 +15,16 @@ This is a backend application for managing and selling toy products. The project
 ```bash
 git clone https://github.com/jbhonest/django-toy-store.git
 ```
-2. In **toystore** folder rename sample_settings.py to local_settings.py
-3. Generate a SECRET_KEY and save it in local_settings.py
 
-4. Navigate to the project directory:
+2. Navigate to the project directory:
 
 ```bash
 cd django-toy-store
 ```
+
+3. In **toystore** folder rename sample_settings.py to local_settings.py
+
+4. Generate a SECRET_KEY and save it in local_settings.py
 
 5. Install the required packages:
 
