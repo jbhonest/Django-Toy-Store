@@ -36,6 +36,9 @@ class CartViewSet(viewsets.ModelViewSet):
                     ]
                     OrderItem.objects.bulk_create(order_items)
 
+                    wallet.balance -= cart.total_price()
+                    wallet.save()
+
                     # Delete current cart
                     Cart.objects.filter(pk=cart.id).delete()
 
