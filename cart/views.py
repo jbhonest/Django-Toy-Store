@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
@@ -48,6 +49,8 @@ class CartViewSet(viewsets.ModelViewSet):
                     return Response({"error": "You don't have enough money in your wallet"}, status=status.HTTP_402_PAYMENT_REQUIRED)
         except (ValueError, TypeError):
             return Response({"error": "You must login to checkout"}, status=status.HTTP_401_UNAUTHORIZED)
+        except ObjectDoesNotExist:
+            return Response({"error": "You don't have a wallet yet"}, status=status.HTTP_402_PAYMENT_REQUIRED)
 
 
 class CartItemViewSet(viewsets.ModelViewSet):

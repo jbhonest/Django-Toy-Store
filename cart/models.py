@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.db import models
 from store.models import Product
+from uuid import uuid4
 
 
 class Wallet(models.Model):
@@ -13,6 +14,7 @@ class Wallet(models.Model):
 
 
 class Cart(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def total_price(self):
