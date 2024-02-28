@@ -2,6 +2,7 @@ from django.db import transaction
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework.mixins import CreateModelMixin, DestroyModelMixin, RetrieveModelMixin, UpdateModelMixin
 from rest_framework import status
 from rest_framework import viewsets, permissions
 from .models import Cart, CartItem, Wallet
@@ -16,7 +17,10 @@ class WalletViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAdminUser]
 
 
-class CartViewSet(viewsets.ModelViewSet):
+class CartViewSet(CreateModelMixin,
+                  RetrieveModelMixin,
+                  DestroyModelMixin,
+                  viewsets.GenericViewSet):
     queryset = Cart.objects.order_by('-pk')
     serializer_class = CartSerializer
 
