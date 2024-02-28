@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django.db.models import Count
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Wallet
+
+
+@admin.register(Wallet)
+class WalletAdmin(admin.ModelAdmin):
+    list_display = ('id', 'user', 'balance')
 
 
 class CartItemInline(admin.TabularInline):

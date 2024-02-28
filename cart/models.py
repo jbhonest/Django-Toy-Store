@@ -1,9 +1,22 @@
+from django.conf import settings
 from django.db import models
 from store.models import Product
 
 
+class Wallet(models.Model):
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    balance = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return str(self.id)
+
+
 class Cart(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def total_price(self):
+        return sum(item.product.price * item.quantity for item in self.items.all())
 
     def __str__(self):
         return str(self.id)

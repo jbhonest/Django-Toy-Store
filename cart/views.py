@@ -3,7 +3,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Wallet
 from finance.models import Order, OrderItem
 from finance.serializers import OrderSerializer
 from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
@@ -23,23 +23,27 @@ class CartViewSet(viewsets.ModelViewSet):
         try:
             with transaction.atomic():
                 # Create a new order based on current cart
-                order = Order.objects.create(user=self.request.user)
-                order_items = [
-                    OrderItem(
-                        order=order,
-                        product=item.product,
-                        price=item.product.price,
-                        quantity=item.quantity
-                    ) for item in cart.items.all()
-                ]
-                OrderItem.objects.bulk_create(order_items)
+                wallet = Wallet.objects.get(user=self.request.user)
+                if wallet.balance >= cart.total_price():
+                    order = Order.objects.create(user=self.request.user)
+                    order_items = [
+                        OrderItem(
+                            order=order,
+                            product=item.product,
+                            price=item.product.price,
+                            quantity=item.quantity
+                        ) for item in cart.items.all()
+                    ]
+                    OrderItem.objects.bulk_create(order_items)
 
-                # Delete current cart
-                Cart.objects.filter(pk=cart.id).delete()
+                    # Delete current cart
+                    Cart.objects.filter(pk=cart.id).delete()
 
-                order_serializer = OrderSerializer(order)
-                return Response(order_serializer.data)
-        except ValueError:
+                    order_serializer = OrderSerializer(order)
+                    return Response(order_serializer.data)
+                else:
+                    return Response({"error": "You don't have enough money in your wallet"}, status=status.HTTP_402_PAYMENT_REQUIRED)
+        except (ValueError, TypeError):
             return Response({"error": "You must login to checkout"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
