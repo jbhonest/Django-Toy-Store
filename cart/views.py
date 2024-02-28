@@ -3,11 +3,17 @@ from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import viewsets, permissions
 from .models import Cart, CartItem, Wallet
 from finance.models import Order, OrderItem
 from finance.serializers import OrderSerializer
-from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer
+from .serializers import CartSerializer, CartItemSerializer, AddCartItemSerializer, UpdateCartItemSerializer, WalletSerializer
+
+
+class WalletViewSet(viewsets.ModelViewSet):
+    queryset = Wallet.objects.order_by('-pk')
+    serializer_class = WalletSerializer
+    permission_classes = [permissions.IsAdminUser]
 
 
 class CartViewSet(viewsets.ModelViewSet):

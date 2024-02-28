@@ -7,7 +7,7 @@ from .serializers import OrderSerializer, OrderItemSerializer
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Order.objects.order_by('-pk')
     serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
     filter_backends = (DjangoFilterBackend,
                        filters.OrderingFilter, filters.SearchFilter,)
     filterset_fields = ('user',)
@@ -15,7 +15,7 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
 
 class OrderItemViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = OrderItemSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAdminUser]
 
     def get_queryset(self):
         return OrderItem.objects.filter(order_id=self.kwargs['order_pk'])

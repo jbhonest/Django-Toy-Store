@@ -1,6 +1,13 @@
 from rest_framework import serializers
 from store.models import Product
-from .models import Cart, CartItem
+from .models import Cart, CartItem, Wallet
+
+
+class WalletSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Wallet
+        fields = ['id', 'user', 'balance']
 
 
 class SimpleProductSerializer(serializers.ModelSerializer):
