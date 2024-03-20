@@ -3,8 +3,10 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
+from home.views import index
 
 urlpatterns = [
+    path('', index, name='index'),
     path(getattr(settings, 'ADMIN_URL'), admin.site.urls),
     path('api/blog/', include('blog.urls')),
     path('api/store/', include('store.urls')),

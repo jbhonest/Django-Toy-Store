@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'rest_framework_simplejwt',
+    'bootstrap5',
 
 
     # My Apps
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'cart.apps.CartConfig',
     'finance.apps.FinanceConfig',
+    'home.apps.HomeConfig',
 ]
 
 MIDDLEWARE = [
