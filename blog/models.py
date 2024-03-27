@@ -12,7 +12,7 @@ class BlogCategory(models.Model):
         return self.name
 
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = 'Blog categories'
 
 
 class Post(models.Model):
