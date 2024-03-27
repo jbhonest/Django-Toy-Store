@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 
 
-class Category(models.Model):
+class BlogCategory(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
 
@@ -19,7 +19,7 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     content = models.TextField()
     category = models.ForeignKey(
-        Category, on_delete=models.PROTECT, related_name='posts')
+        BlogCategory, on_delete=models.PROTECT, related_name='posts')
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     publish_date = models.DateTimeField(auto_now_add=True)
 
@@ -35,7 +35,7 @@ class Post(models.Model):
         return self.title
 
 
-class Comment(models.Model):
+class BlogComment(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='comments')
     text = models.TextField()
@@ -49,7 +49,7 @@ class Comment(models.Model):
         return self.text
 
 
-class Image(models.Model):
+class BlogImage(models.Model):
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name='images')
     caption = models.CharField(max_length=255)

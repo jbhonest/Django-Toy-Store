@@ -1,15 +1,15 @@
 from django.contrib import admin
 from django.db.models import Count
-from .models import Category, Post, Comment, Image
+from .models import BlogCategory, Post, BlogComment, BlogImage
 
 
 class ImageInline(admin.TabularInline):
-    model = Image
+    model = BlogImage
     extra = 1
 
 
 class CommentInline(admin.TabularInline):
-    model = Comment
+    model = BlogComment
     extra = 1
 
 
@@ -29,7 +29,7 @@ class PostAdmin(admin.ModelAdmin):
         return post.comments.count()
 
 
-@admin.register(Category)
+@admin.register(BlogCategory)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'post_count')
 
@@ -43,7 +43,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return category.posts.count()
 
 
-@admin.register(Comment)
+@admin.register(BlogComment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ('id', 'post', 'text', 'author',
                     'publish_date', 'is_active')
@@ -52,7 +52,7 @@ class CommentAdmin(admin.ModelAdmin):
     search_fields = ('text',)
 
 
-@admin.register(Image)
+@admin.register(BlogImage)
 class ImageAdmin(admin.ModelAdmin):
     list_display = ('id', 'post', 'image', 'caption')
     list_filter = ('post',)
